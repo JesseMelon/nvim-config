@@ -22,6 +22,20 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
+
+			-- Enable inline diagnostics with virtual text for all LSP sources (including none-ls)
+      		vim.diagnostic.config({
+				virtual_text = {
+					format = function(diagnostic)
+						return string.format("%s", diagnostic.message)
+					end,
+				},
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = false,
+			})
+
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities
 			})
