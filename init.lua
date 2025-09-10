@@ -29,9 +29,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.relativenumber = true
 vim.opt.number = true -- Keep the current line's absolute number
 
-vim.opt.tabstop = 4 -- A tab is 4 spaces wide for visual alignment
-vim.opt.softtabstop = 4 -- Indentation is 4 spaces when pressing tab
-vim.opt.shiftwidth = 4 -- Indentation moves 4 spaces when shifting
+vim.opt.tabstop = 8 -- A tab is 4 spaces wide for visual alignment
+vim.opt.softtabstop = 8 -- Indentation is 4 spaces when pressing tab
+vim.opt.shiftwidth = 8 -- Indentation moves 4 spaces when shifting
 vim.opt.expandtab = true -- use actual tab characters instead of spaces
 vim.opt.autoindent = true -- maintain indentation level
 vim.opt.smartindent = true
