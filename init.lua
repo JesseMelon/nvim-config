@@ -18,6 +18,32 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = {"c", "cpp"},
   callback = function()
     vim.opt.formatoptions:remove("r")
+    vim.opt.tabstop = 8
+    vim.opt.softtabstop = 8
+    vim.opt.shiftwidth = 8
+    vim.opt.expandtab = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {"lua"},
+  callback = function()
+    vim.opt.formatoptions:remove("r")
+    vim.opt.tabstop = 4
+    vim.opt.softtabstop = 4
+    vim.opt.shiftwidth = 4
+    vim.opt.expandtab = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {"html", "xml"},
+  callback = function()
+    vim.opt.formatoptions:remove("r")
+    vim.opt.tabstop = 2
+    vim.opt.softtabstop = 2
+    vim.opt.shiftwidth = 2
+    vim.opt.expandtab = true
   end,
 })
 
@@ -26,10 +52,10 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.relativenumber = true
 vim.opt.number = true -- Keep the current line's absolute number
 
-vim.opt.tabstop = 4 -- A tab is 4 spaces wide for visual alignment
-vim.opt.softtabstop = 4 -- Indentation is 4 spaces when pressing tab
-vim.opt.shiftwidth = 4 -- Indentation moves 4 spaces when shifting
-vim.opt.expandtab = true -- use actual tab characters instead of spaces
+-- vim.opt.tabstop = 4 -- A tab is 4 spaces wide for visual alignment
+-- vim.opt.softtabstop = 4 -- Indentation is 4 spaces when pressing tab
+-- vim.opt.shiftwidth = 4 -- Indentation moves 4 spaces when shifting
+-- vim.opt.expandtab = true -- use actual tab characters instead of spaces
 vim.opt.autoindent = true -- maintain indentation level
 vim.opt.smartindent = true
 vim.opt.textwidth = 150;
@@ -41,22 +67,5 @@ vim.keymap.set("", "<R-Ctrl>", "<Esc>", {noremap = true, silent = true} )
 vim.keymap.set('n', '<leader>f', ':!astyle --style=java --indent=spaces=4 --max-code-length=150 %<CR>', { noremap = true, silent = true })
 
 require("config.keymaps")
-
-vim.opt.clipboard = "unnamedplus"
-
-vim.cmd([[
-let g:clipboard = {
-                \   'name': 'WslClipboard',
-                \   'copy': {
-                \      '+': 'clip.exe',
-                \      '*': 'clip.exe',
-                \    },
-                \   'paste': {
-                \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-                \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-                \   },
-                \   'cache_enabled': 0,
-                \ }
-]])
 
 require("lazy").setup("plugins")
