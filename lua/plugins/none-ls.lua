@@ -9,8 +9,7 @@ return {
 					args = function(params)
 						print(vim.inspect(params))
 						return {
-							"--style=java",
-							"--indent=spaces=4",
+							"--style=linux",
 						}
 					end,
 				}),

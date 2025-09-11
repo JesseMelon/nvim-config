@@ -13,6 +13,8 @@ return {
 					"lua_ls",
 					"clangd",
 					"ast_grep",
+                    "html",
+                    "emmet_ls"
 				}
 			})
 		end
@@ -49,10 +51,44 @@ return {
 			lspconfig.ast_grep.setup({
 				capabilities = capabilities
 			})
+            lspconfig.html.setup({
+				capabilities = capabilities,
+				filetypes = { "html" },
+                init_options = {
+					provideFormatter = true,
+					configuration = {
+						html = {
+							autoClosingTags = true, -- Automatically insert closing tags
+						},
+					},
+				},
+			})
+			-- OPTIONAL: Emmet for HTML/CSS snippets (attach to HTML files)
+			lspconfig.emmet_ls.setup({
+				capabilities = capabilities,
+				filetypes = { "html", "css" },
+				init_options = {
+					html = {
+						options = {
+							["bem.enabled"] = true,  -- Enables BEM naming if you use it
+						},
+					},
+				},
+			})
 			vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
 			vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
 			vim.keymap.set({'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action,{})
 			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
 		end
-	}
+	},
+    {
+        "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
+        opts = {
+            enable_close = true,  -- Auto-insert closing tag
+            enable_rename = true, -- Auto-rename pairs when editing
+            enable_close_on_slash = false, -- Don't close on </ (avoids conflicts)
+        },
+        dependencies = { "nvim-treesitter/nvim-treesitter" },  -- Requires Treesitter
+    },
 }

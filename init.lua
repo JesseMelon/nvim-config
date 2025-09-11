@@ -66,6 +66,21 @@ vim.keymap.set("", "<R-Ctrl>", "<Esc>", {noremap = true, silent = true} )
 
 vim.keymap.set('n', '<leader>f', ':!astyle --style=java --indent=spaces=4 --max-code-length=150 %<CR>', { noremap = true, silent = true })
 
+vim.opt.clipboard:append("unnamedplus")
+
+vim.g.clipboard = {
+  name = "wl-clipboard",
+  copy = {
+    ["+"] = "wl-copy",
+    ["*"] = "wl-copy",
+  },
+  paste = {
+    ["+"] = "wl-paste",
+    ["*"] = "wl-paste",
+  },
+  cache_enabled = 0, -- Disable caching for simplicity
+}
+
 require("config.keymaps")
 
 require("lazy").setup("plugins")
