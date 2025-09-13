@@ -17,7 +17,6 @@ end
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {"c", "cpp"},
   callback = function()
-    vim.opt.formatoptions:remove("r")
     vim.opt.tabstop = 8
     vim.opt.softtabstop = 8
     vim.opt.shiftwidth = 8
@@ -26,9 +25,8 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"lua"},
+  pattern = {"lua", "sh", "dosbatch", "cmake"},
   callback = function()
-    vim.opt.formatoptions:remove("r")
     vim.opt.tabstop = 4
     vim.opt.softtabstop = 4
     vim.opt.shiftwidth = 4
@@ -39,7 +37,6 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {"html", "xml"},
   callback = function()
-    vim.opt.formatoptions:remove("r")
     vim.opt.tabstop = 2
     vim.opt.softtabstop = 2
     vim.opt.shiftwidth = 2
@@ -51,11 +48,7 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.opt.relativenumber = true
 vim.opt.number = true -- Keep the current line's absolute number
-
--- vim.opt.tabstop = 4 -- A tab is 4 spaces wide for visual alignment
--- vim.opt.softtabstop = 4 -- Indentation is 4 spaces when pressing tab
--- vim.opt.shiftwidth = 4 -- Indentation moves 4 spaces when shifting
--- vim.opt.expandtab = true -- use actual tab characters instead of spaces
+vim.opt.formatoptions:remove("r", "o")
 vim.opt.autoindent = true -- maintain indentation level
 vim.opt.smartindent = true
 vim.opt.textwidth = 150;
