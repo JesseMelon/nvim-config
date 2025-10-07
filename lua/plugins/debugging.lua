@@ -143,7 +143,6 @@ return {
 			vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#FFFFFF", bg = "#000000" }) -- Grey for rejected breakpoints
 
             vim.api.nvim_set_hl(0, "NvimDapVirtualText", { fg = "#00FF00", bold = true })
-
 			vim.schedule(function ()
 				require("dapui").setup()
                 require("nvim-dap-virtual-text").setup({
