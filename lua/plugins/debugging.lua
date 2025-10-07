@@ -115,6 +115,7 @@ return {
 				dapui.close()
 			end
 			-- Key mappings
+            vim.keymap.set('n', '<Leader>dd', ':OverseerRun build_debug<CR>', { noremap = true, silent = true })
 			vim.keymap.set("n", "<Leader>dc", function()
 				require("dap").continue()
 			end, { desc = "Continue Debugging" })
