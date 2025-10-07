@@ -43,6 +43,9 @@ return {
                 end
                 return nil
             end
+            local function get_source_file()
+                return vim.fn.input("Source file: ", vim.fn.getcwd() .. "/", "file")
+            end
 
 			-- setup C config
 			dap.configurations.c = {
@@ -63,19 +66,26 @@ return {
 			dap.configurations.cpp = dap.configurations.c -- same configuration for C++
 
             overseer.register_template({
-                name = "Build and Debug",
+                name = "build_debug",
                 builder = function()
+                    local source_file = get_source_file() -- Prompt for source file
+                    local output_file = vim.fn.fnamemodify(source_file, ":r") -- Remove extension
                     return {
-                        cmd = {"./build.sh"},
+                        cmd = {"bear", "--"},
+                        args = {
+                            "clang", "-g", "-O0", "-Wall", "-Wextra", "-Wpedantic",
+                            "-fsanitize=address", "-fsanitize=undefined",
+                            "-o", output_file, source_file
+                        },
                         cwd = vim.fn.getcwd(),
                         components = {
-                            {"on_output_parse",
-                                parser = require("overseer.parser").new({
-                                    diagnostics = {
-                                        {"extract", "(%S+):(%d+):(%d):", "filename", "lnum", "col"},
-                                    }
-                                }),
+                        {
+                            "on_output_parse",
+                            problem_matcher = {
+                                -- Use a predefined problem matcher for Clang diagnostics
+                                "$gcc", -- Matches Clang/GCC error format (filename:line:column:)
                             },
+                        },
                         "default"
                         },
                    }
