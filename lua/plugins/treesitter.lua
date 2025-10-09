@@ -7,9 +7,12 @@ return {
 			auto_install = true,
 			highlight = {
                 enable = true,
-                disable = { "sh", "bash", },
+                disable = { "sh", "bash"},
             },
-			indent = { enable = true },
+			indent = {
+                enable = true,
+                disable = { "cmake"},
+            },
             fold = {enable = true},
 		})
 	end,

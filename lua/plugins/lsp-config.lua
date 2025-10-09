@@ -7,7 +7,11 @@ return {
     },
     { -- Ensuring LSPs are installed
         "williamboman/mason-lspconfig.nvim",
+        dependencies = { "williamboman/mason.nvim" },
         config = function()
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            capabilities.offsetEncoding = { "utf-8" } -- Force UTF-8 encoding
+
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
@@ -16,28 +20,72 @@ return {
                     "html",
                     "emmet_ls",
                     "ts_ls",
-                    "bashls"
+                    "bashls",
                 },
                 handlers = {
+                    -- Custom setup for clangd
                     ["clangd"] = function()
-                        -- Skip mason-lspconfig's default setup for clangd
+                        local lspconfig = require("lspconfig") -- Scoped require to avoid global warning
+                        lspconfig.clangd.setup({
+                            capabilities = capabilities,
+                            cmd = { "clangd", "--header-insertion=never" },
+                            filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+                            root_dir = lspconfig.util.root_pattern(
+                                ".clangd",
+                                ".clang-tidy",
+                                ".clang-format",
+                                "compile_commands.json",
+                                "compile_flags.txt",
+                                "configure.ac",
+                                ".git"
+                            ),
+                        })
                     end,
+                    -- Custom setup for html
+                    ["html"] = function()
+                        local lspconfig = require("lspconfig") -- Scoped require
+                        lspconfig.html.setup({
+                            capabilities = capabilities,
+                            filetypes = { "html" },
+                            init_options = {
+                                provideFormatter = true,
+                                configuration = {
+                                    html = {
+                                        autoClosingTags = true,
+                                    },
+                                },
+                            },
+                        })
+                    end,
+                    -- Custom setup for emmet_ls
+                    ["emmet_ls"] = function()
+                        local lspconfig = require("lspconfig") -- Scoped require
+                        lspconfig.emmet_ls.setup({
+                            capabilities = capabilities,
+                            filetypes = { "html", "css" },
+                            init_options = {
+                                html = {
+                                    options = {
+                                        ["bem.enabled"] = true,
+                                    },
+                                },
+                            },
+                        })
+                    end,
+                    -- Default handler for other servers (with capabilities)
                     function(server_name)
-                        require("lspconfig")[server_name].setup({
-                            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+                        local lspconfig = require("lspconfig") -- Scoped require
+                        lspconfig[server_name].setup({
+                            capabilities = capabilities,
                         })
                     end,
                 },
             })
         end,
     },
-    { -- LSP integration
+    { -- LSP integration (global settings only)
         "neovim/nvim-lspconfig",
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            capabilities.offsetEncoding = { "utf-8" } -- Force UTF-8 encoding
-            local lspconfig = require("lspconfig")
-
             -- Enable inline diagnostics
             vim.diagnostic.config({
                 virtual_text = {
@@ -49,53 +97,6 @@ return {
                 underline = true,
                 update_in_insert = false,
                 severity_sort = false,
-            })
-
-            lspconfig.clangd.setup({
-                capabilities = capabilities,
-                cmd = { "clangd", "--header-insertion=never" },
-                filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
-                root_dir = require("lspconfig").util.root_pattern(
-                    ".clangd",
-                    ".clang-tidy",
-                    ".clang-format",
-                    "compile_commands.json",
-                    "compile_flags.txt",
-                    "configure.ac",
-                    ".git"
-                ),
-            })
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.ts_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.ast_grep.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.html.setup({
-                capabilities = capabilities,
-                filetypes = { "html" },
-                init_options = {
-                    provideFormatter = true,
-                    configuration = {
-                        html = {
-                            autoClosingTags = true,
-                        },
-                    },
-                },
-            })
-            lspconfig.emmet_ls.setup({
-                capabilities = capabilities,
-                filetypes = { "html", "css" },
-                init_options = {
-                    html = {
-                        options = {
-                            ["bem.enabled"] = true,
-                        },
-                    },
-                },
             })
 
             -- Keymaps
