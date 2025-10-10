@@ -18,7 +18,7 @@ return {
                     "clangd",
                     "ast_grep",
                     "html",
-                    "emmet_ls",
+                    "cssls",
                     "ts_ls",
                     "bashls",
                 },
@@ -54,20 +54,9 @@ return {
                                         autoClosingTags = true,
                                     },
                                 },
-                            },
-                        })
-                    end,
-                    -- Custom setup for emmet_ls
-                    ["emmet_ls"] = function()
-                        local lspconfig = require("lspconfig") -- Scoped require
-                        lspconfig.emmet_ls.setup({
-                            capabilities = capabilities,
-                            filetypes = { "html", "css" },
-                            init_options = {
-                                html = {
-                                    options = {
-                                        ["bem.enabled"] = true,
-                                    },
+                                embeddedLanguages = {
+                                    css = true,
+                                    javascript = true,
                                 },
                             },
                         })

@@ -11,7 +11,7 @@ return {
             },
 			indent = {
                 enable = true,
-                disable = { "cmake"},
+                disable = { "cmake", "html"},
             },
             fold = {enable = true},
 		})
