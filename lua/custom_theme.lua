@@ -22,7 +22,7 @@ local theme = lush(function()
     Type {fg = hsl(120, 50, 65)},
     StorageClass {fg = hsl(120, 50, 65)},
     PreProc {fg = hsl(120, 50, 65)},
-    Special {fg = hsl(120, 50, 65)},
+    Special {fg = hsl(250, 100, 75)},
     -- Functions (Brown)
     Function { fg = hsl(20, 50, 55), gui = "bold" },
 
@@ -44,12 +44,12 @@ local theme = lush(function()
     WinSeparator { fg = hsl(120, 40, 40) },
 
     -- NeoTree Customization
-    -- NeoTreeFileName { fg = hsl(120, 70, 50) },  -- green for file names
-    -- NeoTreeFileNameOpened { fg = hsl(30, 50, 40) },  -- Green for open file names
-    -- NeoTreeRootName { fg = hsl(30, 50, 40) },  -- Dark Green for root folder
-    -- NeoTreeDirectoryName { fg = hsl(120, 70, 50) },  -- Darker Green for directories
-    -- NeoTreeDirectoryIcon { fg = hsl(120, 70, 50) },  -- Darker Green for directory icons
-    -- NeoTreeStatusLine { bg = hsl(120, 40, 40) },  -- Dark background for the status line
+    -- NeoTreeFileName { fg = hsl(120, 70, 50) },
+    -- NeoTreeFileNameOpened { fg = hsl(30, 50, 40) },
+    -- NeoTreeRootName { fg = hsl(30, 50, 40) },
+    -- NeoTreeDirectoryName { fg = hsl(120, 70, 50) },
+    -- NeoTreeDirectoryIcon { fg = hsl(120, 70, 50) },
+    -- NeoTreeStatusLine { bg = hsl(120, 40, 40) },
 
     -- Tildas and vertical lines (Green)
     -- NeoTreeNorma l { fg = hsl(120, 40, 40) },  -- Green for normal text in NeoTree (including tildas ~)

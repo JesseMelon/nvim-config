@@ -94,15 +94,5 @@ return {
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
         end,
-    },
-    {
-        "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
-        opts = {
-            enable_close = true,
-            enable_rename = true,
-            enable_close_on_slash = false,
-        },
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-    },
+    }
 }

@@ -25,21 +25,11 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"lua", "sh", "dosbatch", "cmake", "html"},
+  pattern = {"lua", "sh", "dosbatch", "cmake", "html", "svg", "xml"},
   callback = function()
     vim.opt.tabstop = 4
     vim.opt.softtabstop = 4
     vim.opt.shiftwidth = 4
-    vim.opt.expandtab = true
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"xml"},
-  callback = function()
-    vim.opt.tabstop = 2
-    vim.opt.softtabstop = 2
-    vim.opt.shiftwidth = 2
     vim.opt.expandtab = true
   end,
 })
