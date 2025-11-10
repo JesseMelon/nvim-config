@@ -25,11 +25,21 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"lua", "sh", "dosbatch", "cmake", "html", "svg", "xml"},
+  pattern = {"lua", "sh", "dosbatch", "cmake"},
   callback = function()
     vim.opt.tabstop = 4
     vim.opt.softtabstop = 4
     vim.opt.shiftwidth = 4
+    vim.opt.expandtab = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "html", "svg", "xml", "astro"},
+  callback = function()
+    vim.opt.tabstop = 2
+    vim.opt.softtabstop = 2
+    vim.opt.shiftwidth = 2
     vim.opt.expandtab = true
   end,
 })
@@ -63,6 +73,48 @@ vim.g.clipboard = {
   },
   cache_enabled = 0, -- Disable caching for simplicity
 }
+
+-- ──────────────────────────────────────────────────────────────────────
+-- Smart Astro indent – dedent on “/>” only when there is *no* space before /
+-- ──────────────────────────────────────────────────────────────────────
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "astro",
+  callback = function()
+    -- 1. Start from the built-in indentkeys (includes / and <>>)
+    local ik = vim.opt_local.indentkeys:get()
+
+    -- 2. Remove the two keys that cause the unwanted dedent
+    ik = vim.tbl_filter(function(k) return k ~= "/" and k ~= "<>>" end, ik)
+
+    -- 3. Add a *custom* key that runs our Lua function
+    table.insert(ik, "<|>")
+
+    vim.opt_local.indentkeys = ik
+
+    -- 4. The function that decides whether to dedent
+    vim.opt_local.indentexpr = "v:lua.AstroSmartIndent()"
+
+    -- 5. Define the Lua function (global so indentexpr can see it)
+    _G.AstroSmartIndent = function()
+      local line = vim.fn.getline(".")
+      local prev = vim.fn.getline(vim.v.lnum - 1)
+
+      -- If the previous line ends with " />" (space + slash) → keep same indent
+      if prev:match("%s+/$") then
+        return vim.fn.indent(vim.v.lnum - 1)
+      end
+
+      -- Otherwise fall back to Treesitter (or the default Astro indent)
+      local ts_indent = vim.treesitter.get_indent and vim.treesitter.get_indent() or -1
+      if ts_indent > 0 then
+        return ts_indent
+      end
+
+      -- Fallback to the original indentexpr (the one from runtime/astro.vim)
+      return vim.fn["GetAstroIndent"]()
+    end
+  end,
+})
 
 require("config.keymaps")
 
