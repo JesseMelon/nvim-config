@@ -61,6 +61,26 @@ return {
                             },
                         })
                     end,
+                    ["ts_ls"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.ts_ls.setup({
+                            capabilities = capabilities,
+                            filetypes = {
+                                "javascript",
+                                "javascriptreact",
+                                "javascript.jsx",
+                                "typescript",
+                                "typescriptreact",
+                                "typescript.tsx",
+                                "astro",
+                            },
+                            init_options = {
+                                preferences = {
+                                    includeCompletionsForModuleExports = true,
+                                }
+                            }
+                        })
+                    end,
                     -- Default handler for other servers (with capabilities)
                     function(server_name)
                         local lspconfig = require("lspconfig") -- Scoped require
