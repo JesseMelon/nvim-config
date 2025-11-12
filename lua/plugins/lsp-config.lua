@@ -18,7 +18,6 @@ return {
                     "clangd",
                     "ast_grep",
                     "html",
-                    "cssls",
                     "ts_ls",
                     "bashls",
                 },

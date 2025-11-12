@@ -14,6 +14,11 @@ return {
 					hide_dotfiles = false, -- Do NOT hide dotfiles (.* files)
 					hide_gitignored = false, -- Do NOT hide gitignored files (optional)
 				},
+                window = {
+                    mappings = {
+                        ["/"] = "noop"
+                    }
+                }
 			},
 		})
 

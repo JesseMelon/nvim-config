@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "html", "svg", "xml", "astro"},
+  pattern = { "html", "svg", "xml", "astro", "typescript"},
   callback = function()
     vim.opt.tabstop = 2
     vim.opt.softtabstop = 2
@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local ik = vim.opt_local.indentkeys:get()
 
     -- 2. Remove the two keys that cause the unwanted dedent
-    ik = vim.tbl_filter(function(k) return k ~= "/" and k ~= "<>>" end, ik)
+    ik = vim.tbl_filter(function(k) return k ~= "/" and k ~= "<>>" and k ~= "<<>" and k ~= "}" and k ~= "{" and k ~= "0{" and k ~= "<" end, ik)
 
     -- 3. Add a *custom* key that runs our Lua function
     table.insert(ik, "<|>")
