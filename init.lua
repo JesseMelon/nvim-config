@@ -13,6 +13,23 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 
+
+-- Classic Vim Dark theme with full transparency
+-- vim.o.background = "dark"
+vim.cmd("colorscheme vim")
+
+-- Force transparency so your cool background shows through
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+vim.api.nvim_set_hl(0, "NonText", { bg = "none" })
+vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "FoldColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "VertSplit", { bg = "none" })
+vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#003344", bg = "none" }) -- subtle border like Kate
+
 --dont auto-comment every new line
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {"c", "cpp"},
@@ -35,7 +52,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "html", "svg", "xml", "astro", "typescript"},
+  pattern = { "html", "svg", "xml", "astro", "typescript", "javascript"},
   callback = function()
     vim.opt.tabstop = 2
     vim.opt.softtabstop = 2
@@ -74,9 +91,7 @@ vim.g.clipboard = {
   cache_enabled = 0, -- Disable caching for simplicity
 }
 
--- ──────────────────────────────────────────────────────────────────────
--- Smart Astro indent – dedent on “/>” only when there is *no* space before /
--- ──────────────────────────────────────────────────────────────────────
+-- Astro Indent
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "astro",
   callback = function()
@@ -84,7 +99,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local ik = vim.opt_local.indentkeys:get()
 
     -- 2. Remove the two keys that cause the unwanted dedent
-    ik = vim.tbl_filter(function(k) return k ~= "/" and k ~= "<>>" and k ~= "<<>" and k ~= "}" and k ~= "{" and k ~= "0{" and k ~= "<" end, ik)
+    ik = vim.tbl_filter(function(k) return k ~= "/" and k ~= "<>>" and k ~= "<<>" and k ~= "}" and k ~= "{" and k ~= "0{" and k ~= "<" and k ~= "RETURN" end, ik)
 
     -- 3. Add a *custom* key that runs our Lua function
     table.insert(ik, "<|>")
