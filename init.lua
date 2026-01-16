@@ -18,6 +18,8 @@ end
 -- vim.o.background = "dark"
 vim.cmd("colorscheme vim")
 
+vim.opt.hlsearch = false
+
 -- Force transparency so your cool background shows through
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })

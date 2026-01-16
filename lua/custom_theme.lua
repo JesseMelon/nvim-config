@@ -15,9 +15,9 @@ local theme = lush(function()
     FloatBorder { fg = hsl(180, 60, 60), bg = "none" },  -- Teal border
 
     -- Syntax groups
-    Comment { fg = hsl(160, 60, 50), gui = "italic" },  -- Emerald green comments #1ad99f
-    Constant { fg = hsl(300, 80, 76) },  -- Pink constants #ff87ff
-    Number { Constant },  -- Pink numbers
+    Comment { fg = hsl(160, 90, 30), gui = "italic" },  -- Emerald green comments #1ad99f
+    Constant { fg = hsl(160, 60, 50) },  -- Pink constants #ff87ff
+    Number { fg = hsl(280, 45, 55) },  -- Pink numbers
     Float { fg = hsl(200, 100, 60) },
     Boolean { fg = hsl(0, 80, 100) },
     Character { fg = hsl(300, 100, 76) },  -- Pink chars
@@ -35,7 +35,7 @@ local theme = lush(function()
 
     Operator { Statement },  -- Light grey operators
 
-    PreProc { fg = hsl(180, 60, 60) },  -- Teal for #includes #5fd7d7
+    PreProc { fg = hsl(160, 60, 50) },  -- Teal for #includes #5fd7d7
     Keyword { PreProc },  -- keywords
     Include { PreProc },
     Define { PreProc },
@@ -47,10 +47,10 @@ local theme = lush(function()
     Structure { Type },
     Typedef { Type },
 
-    Special { fg = hsl(180, 50, 70) },  -- Lighter teal special
+    Special { fg = hsl(180, 100, 70) },  -- Lighter teal special
     SpecialChar { Special },
     Tag { Special },
-    Delimiter { fg = hsl(283, 45.1, 55.1) },
+    Delimiter { fg = hsl(280, 45, 55) },
     SpecialComment { Comment },
     Debug { Special },
 
@@ -114,6 +114,8 @@ local theme = lush(function()
     NeoTreeDirectoryIcon { fg = hsl(160, 80, 50) },
     NeoTreeGitIgnored { fg = hsl(160, 40, 40) },  -- Darker emerald ignored
     NeoTreeIndentMarker { fg = hsl(180, 40, 40) },  -- Teal indent
+    NeoTreeFloatBorder { fg = hsl(180, 60, 60)},
+    NeoTreeTitleBar { fg = hsl(160, 80, 50)},
 
     -- Telescope
     TelescopeBorder { fg = hsl(180, 60, 60) },  -- Teal border

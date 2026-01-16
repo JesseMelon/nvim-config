@@ -1,100 +1,87 @@
 return {
-    { -- LSP management
+
+    -- Mason (installer)
+    {
         "williamboman/mason.nvim",
         config = function()
             require("mason").setup()
         end,
     },
-    { -- Ensuring LSPs are installed
+
+    -- Auto-install LSPs
+    {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "williamboman/mason.nvim" },
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            capabilities.offsetEncoding = { "utf-8" } -- Force UTF-8 encoding
-
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
                     "clangd",
                     "ast_grep",
                     "html",
-                    "ts_ls",
-                    "bashls",
                 },
-                handlers = {
-                    -- Custom setup for clangd
-                    ["clangd"] = function()
-                        local lspconfig = require("lspconfig") -- Scoped require to avoid global warning
-                        lspconfig.clangd.setup({
-                            capabilities = capabilities,
-                            cmd = { "clangd", "--header-insertion=never" },
-                            filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
-                            root_dir = lspconfig.util.root_pattern(
-                                ".clangd",
-                                ".clang-tidy",
-                                ".clang-format",
-                                "compile_commands.json",
-                                "compile_flags.txt",
-                                "configure.ac",
-                                ".git"
-                            ),
-                        })
-                    end,
-                    -- Custom setup for html
-                    ["html"] = function()
-                        local lspconfig = require("lspconfig") -- Scoped require
-                        lspconfig.html.setup({
-                            capabilities = capabilities,
-                            filetypes = { "html" },
-                            init_options = {
-                                provideFormatter = true,
-                                configuration = {
-                                    html = {
-                                        autoClosingTags = true,
-                                    },
-                                },
-                                embeddedLanguages = {
-                                    css = true,
-                                    javascript = true,
-                                },
-                            },
-                        })
-                    end,
-                    ["ts_ls"] = function()
-                        local lspconfig = require("lspconfig")
-                        lspconfig.ts_ls.setup({
-                            capabilities = capabilities,
-                            filetypes = {
-                                "javascript",
-                                "javascriptreact",
-                                "javascript.jsx",
-                                "typescript",
-                                "typescriptreact",
-                                "typescript.tsx",
-                                "astro",
-                            },
-                            init_options = {
-                                preferences = {
-                                    includeCompletionsForModuleExports = true,
-                                }
-                            }
-                        })
-                    end,
-                    -- Default handler for other servers (with capabilities)
-                    function(server_name)
-                        local lspconfig = require("lspconfig") -- Scoped require
-                        lspconfig[server_name].setup({
-                            capabilities = capabilities,
-                        })
-                    end,
-                },
+
+                -- You can keep custom handlers for very special cases,
+                -- but most can now be removed / simplified
             })
         end,
     },
-    { -- LSP integration (global settings only)
+
+    -- lspconfig (provides default configs + we override here)
+    {
         "neovim/nvim-lspconfig",
+        dependencies = { "hrsh7th/cmp-nvim-lsp" },  -- if you're using cmp
         config = function()
-            -- Enable inline diagnostics
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+            -- Modern way: define configs + enable
+
+            -- Example: your special html config
+            vim.lsp.config("html", {
+                capabilities = capabilities,
+                filetypes = { "html" },
+                init_options = {
+                    provideFormatter = true,
+                    configuration = {
+                        html = { autoClosingTags = true },
+                    },
+                    embeddedLanguages = {
+                        css = true,
+                        javascript = true,
+                    },
+                },
+            })
+
+            -- ts_ls example
+            vim.lsp.config("ts_ls", {
+                capabilities = capabilities,
+                filetypes = {
+                    "javascript",
+                    "javascriptreact",
+                    "javascript.jsx",
+                    "typescript",
+                    "typescriptreact",
+                    "typescript.tsx",
+                    "astro",
+                },
+                init_options = {
+                    preferences = {
+                        includeCompletionsForModuleExports = true,
+                    },
+                },
+            })
+
+            -- neocmake ← here is what you want
+            vim.lsp.config("neocmake", {
+                capabilities = capabilities,
+                init_options = { command_case = "lower_case", use_snippets = false },
+            })
+
+            -- Optional: fallback for all other servers that have default config
+            -- (mason-lspconfig already installed them → they'll get auto-enabled with defaults)
+            -- You normally don't need to do anything for them anymore
+
+            -- Your global LSP settings & keymaps
             vim.diagnostic.config({
                 virtual_text = {
                     format = function(diagnostic)
@@ -107,11 +94,10 @@ return {
                 severity_sort = false,
             })
 
-            -- Keymaps
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
         end,
-    }
+    },
 }

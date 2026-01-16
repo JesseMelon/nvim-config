@@ -18,7 +18,7 @@ return {
 				type = "server",
 				port = 12345,
 				executable = {
-					command = "/home/jessemelon/.local/share/nvim/mason/bin/codelldb",
+					command = "/home/melon/.local/share/nvim/mason/bin/codelldb",
 					args = { "--port", "12345" },
 				},
 			}

@@ -113,7 +113,49 @@ return {
 				}, {
 					{ name = "buffer", keyword_length = 3 },
 				}),
-			})
-		end,
-	},
+            })
+
+            -- -- ┌────────────────────────────────────────────────────────────┐
+            -- -- │   THIS BELONGS **OUTSIDE** and **AFTER** cmp.setup()       │
+            -- -- └────────────────────────────────────────────────────────────┘
+            -- cmp.event:on("confirm_done", function(evt)
+            --   vim.notify("confirm_done triggered!", vim.log.levels.INFO)
+            --
+            --   -- Safely get the completion item (evt.entry can sometimes be nil in edge cases)
+            --   local entry = evt and evt.entry
+            --   local item = entry and entry:get_completion_item()
+            --
+            --   if not item then
+            --     vim.notify("No completion item found in event!", vim.log.levels.WARN)
+            --     return
+            --   end
+            --
+            --   -- Now debug-print safely
+            --   vim.notify(
+            --     "Kind: " .. tostring(item.kind) .. " | insertTextFormat: " .. tostring(item.insertTextFormat or "nil"),
+            --     vim.log.levels.DEBUG
+            --   )
+            --
+            --   -- Try Function kind first (most reliable for cmake-language-server commands)
+            --   if vim.bo.filetype == "cmake"
+            --      and item.kind == cmp.lsp.CompletionItemKind.Function then
+            --
+            --     vim.notify("CMake function detected — cleaning parentheses!", vim.log.levels.WARN)
+            --
+            --     vim.schedule(function()
+            --       local keys = vim.api.nvim_replace_termcodes("<Esc>di)", true, false, true)
+            --       vim.api.nvim_feedkeys(keys, "n", true)
+            --       vim.notify("Parentheses cleaned!", vim.log.levels.INFO)
+            --     end)
+            --
+            --   -- Optional fallback: also catch if somehow it's Snippet (unlikely but good to have)
+            --   elseif vim.bo.filetype == "cmake"
+            --          and item.kind == cmp.lsp.CompletionItemKind.Snippet then
+            --
+            --     vim.notify("CMake snippet (rare) detected — cleaning!", vim.log.levels.WARN)
+            --     -- same schedule block as above...
+            --   end
+            -- end)
+        end,
+    },
 }
