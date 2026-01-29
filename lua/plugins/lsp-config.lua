@@ -30,7 +30,7 @@ return {
     -- lspconfig (provides default configs + we override here)
     {
         "neovim/nvim-lspconfig",
-        dependencies = { "hrsh7th/cmp-nvim-lsp" },  -- if you're using cmp
+        dependencies = { "hrsh7th/cmp-nvim-lsp" }, -- if you're using cmp
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -99,5 +99,51 @@ return {
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
         end,
+    },
+    {
+        "stevearc/conform.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { "williamboman/mason.nvim" },
+        opts = {
+            formatters_by_ft = {
+                c   = { "clang_format" },
+                cpp = { "clang_format" },
+                h   = { "clang_format" }, -- headers often treated as C++
+            },
+
+            formatters = {
+                clang_format = {
+                    -- Hardcode Linux kernel-like style inline (no .clang-format needed)
+                    prepend_args = {
+                        '--style={'
+                        .. 'BasedOnStyle: LLVM, '
+                        .. 'IndentWidth: 8, '
+                        .. 'TabWidth: 8, '
+                        .. 'UseTab: Always, '
+                        .. 'BreakBeforeBraces: Linux, '
+                        .. 'ColumnLimit: 150, ' -- your preferred line length
+                        .. 'AccessModifierOffset: -4, ' -- flush public:/private: left
+                        .. 'PointerAlignment: Left, '
+                        .. 'DerivePointerAlignment: false, '
+                        .. 'AllowShortFunctionsOnASingleLine: None, '
+                        .. 'AllowShortIfStatementsOnASingleLine: false, '
+                        .. 'AllowShortLoopsOnASingleLine: false, '
+                        .. 'AllowShortBlocksOnASingleLine: false, '
+                        .. 'FixNamespaceComments: false, ' -- kernel often disables
+                        .. 'SortIncludes: false'   -- kernel doesn't sort includes aggressively
+                        .. '}',
+                    },
+                },
+            },
+
+            -- Format on save (or use :ConformInfo / <leader>cf manually)
+            format_on_save = {
+                timeout_ms = 750,
+                lsp_format = "fallback", -- if LSP has formatter, use it; else conform
+            },
+
+            -- Optional: notify when formatting fails
+            notify_on_error = true,
+        },
     },
 }

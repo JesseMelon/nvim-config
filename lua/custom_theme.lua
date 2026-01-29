@@ -17,7 +17,7 @@ local theme = lush(function()
     -- Syntax groups
     Comment { fg = hsl(160, 90, 30), gui = "italic" },  -- Emerald green comments #1ad99f
     Constant { fg = hsl(160, 60, 50) },  -- Pink constants #ff87ff
-    Number { fg = hsl(280, 45, 55) },  -- Pink numbers
+    Number { fg = hsl(300, 100, 76) },  -- Pink numbers
     Float { fg = hsl(200, 100, 60) },
     Boolean { fg = hsl(0, 80, 100) },
     Character { fg = hsl(300, 100, 76) },  -- Pink chars
@@ -112,7 +112,7 @@ local theme = lush(function()
     NeoTreeRootName { fg = hsl(160, 80, 50), gui = "bold" },
     NeoTreeDirectoryName { fg = hsl(160, 80, 50) },  -- Emerald directories
     NeoTreeDirectoryIcon { fg = hsl(160, 80, 50) },
-    NeoTreeGitIgnored { fg = hsl(160, 40, 40) },  -- Darker emerald ignored
+    NeoTreeGitIgnored { fg = hsl(280, 20, 55) },  -- Darker emerald ignored
     NeoTreeIndentMarker { fg = hsl(180, 40, 40) },  -- Teal indent
     NeoTreeFloatBorder { fg = hsl(180, 60, 60)},
     NeoTreeTitleBar { fg = hsl(160, 80, 50)},
