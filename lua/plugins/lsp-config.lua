@@ -52,6 +52,20 @@ return {
                 },
             })
 
+            vim.lsp.config("clangd", {
+                -- Add the cmd table here to override the flags
+                cmd = {
+                    "clangd",
+                    "--background-index=false",
+                    "--header-insertion=never",
+                    "--completion-style=bundled",
+                    "--clang-tidy", -- Keep this if you want those tidy checks from your YAML
+                },
+                capabilities = capabilities,
+                -- Force filetypes here just in case
+                filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+            })
+
             -- ts_ls example
             vim.lsp.config("ts_ls", {
                 capabilities = capabilities,
@@ -109,6 +123,7 @@ return {
                 c   = { "clang_format" },
                 cpp = { "clang_format" },
                 h   = { "clang_format" }, -- headers often treated as C++
+                hpp = { "clang_format" },
             },
 
             formatters = {
@@ -120,17 +135,20 @@ return {
                         .. 'IndentWidth: 8, '
                         .. 'TabWidth: 8, '
                         .. 'UseTab: Always, '
+                        .. 'ContinuationIndentWidth: 8, '
                         .. 'BreakBeforeBraces: Linux, '
-                        .. 'ColumnLimit: 150, ' -- your preferred line length
-                        .. 'AccessModifierOffset: -4, ' -- flush public:/private: left
+                        .. 'BreakAfterAttributes: Always, '
+                        .. 'ColumnLimit: 80, '          -- your preferred line length
+                        .. 'AccessModifierOffset: -8, ' -- flush public:/private: left
                         .. 'PointerAlignment: Left, '
                         .. 'DerivePointerAlignment: false, '
-                        .. 'AllowShortFunctionsOnASingleLine: None, '
-                        .. 'AllowShortIfStatementsOnASingleLine: false, '
+                        .. 'AllowShortFunctionsOnASingleLine: All, '
+                        .. 'AllowShortIfStatementsOnASingleLine: true, '
                         .. 'AllowShortLoopsOnASingleLine: false, '
                         .. 'AllowShortBlocksOnASingleLine: false, '
                         .. 'FixNamespaceComments: false, ' -- kernel often disables
-                        .. 'SortIncludes: false'   -- kernel doesn't sort includes aggressively
+                        .. 'SortIncludes: false, '         -- kernel doesn't sort includes aggressively
+                        .. 'EmptyLineBeforeAccessModifier: Never'
                         .. '}',
                     },
                 },
