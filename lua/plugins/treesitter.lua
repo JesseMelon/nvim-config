@@ -1,19 +1,22 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":tsupdate",
-	config = function()
-		local config = require("nvim-treesitter.configs")
-		config.setup({
-			auto_install = true,
-			highlight = {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+        -- The setup function is now located directly on the main module
+        require("nvim-treesitter").setup({
+            auto_install = true,
+            highlight = {
                 enable = true,
-                disable = { "sh", "bash"},
+                disable = { "sh", "bash" },
             },
-			indent = {
+            indent = {
                 enable = true,
-                disable = { "cmake", "html"},
+                disable = { "cmake", "html" },
             },
-            fold = {enable = true},
-		})
-	end,
+            -- Note: Treesitter folding is typically handled by Neovim options,
+            -- but keeping this here for your preference.
+            fold = { enable = true },
+        })
+    end,
 }
+

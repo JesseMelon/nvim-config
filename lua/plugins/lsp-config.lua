@@ -16,9 +16,6 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "clangd",
-                    "ast_grep",
-                    "html",
                 },
 
                 -- You can keep custom handlers for very special cases,

@@ -16,9 +16,11 @@ end
 
 -- Classic Vim Dark theme with full transparency
 -- vim.o.background = "dark"
-vim.cmd("colorscheme vim")
+-- vim.cmd("colorscheme vim")
 
 vim.opt.hlsearch = false
+
+vim.opt.termguicolors = true
 
 -- Force transparency so your cool background shows through
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -88,18 +90,20 @@ vim.keymap.set('n', '<leader>#', 'O#<esc>79a=<esc>jo#<esc>79a-<esc>', { noremap 
 
 vim.opt.clipboard:append("unnamedplus")
 
-vim.g.clipboard = {
-    name = "wl-clipboard",
-    copy = {
-        ["+"] = "wl-copy",
-        ["*"] = "wl-copy",
-    },
-    paste = {
-        ["+"] = "wl-paste",
-        ["*"] = "wl-paste",
-    },
-    cache_enabled = 0, -- Disable caching for simplicity
-}
+vim.cmd([[
+let g:clipboard = {
+                \   'name': 'WslClipboard',
+                \   'copy': {
+                \      '+': 'clip.exe',
+                \      '*': 'clip.exe',
+                \    },
+                \   'paste': {
+                \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                \   },
+                \   'cache_enabled': 0,
+                \ }
+]])
 
 vim.filetype.add({
     extension = {
