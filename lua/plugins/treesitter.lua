@@ -2,20 +2,21 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-        -- The setup function is now located directly on the main module
         require("nvim-treesitter").setup({
             auto_install = true,
-            highlight = {
-                enable = true,
-                disable = { "sh", "bash" },
-            },
-            indent = {
-                enable = true,
-                disable = { "cmake", "html" },
-            },
-            -- Note: Treesitter folding is typically handled by Neovim options,
-            -- but keeping this here for your preference.
-            fold = { enable = true },
+        })
+
+        -- New rewrite: highlight is Neovim built-in, enable it per-filetype via autocmd
+        vim.api.nvim_create_autocmd("FileType", {
+            callback = function(ev)
+                local ft = vim.bo[ev.buf].filetype
+                -- Skip filetypes where treesitter highlight causes issues
+                if ft == "sh" or ft == "bash" then return end
+                local ok = pcall(vim.treesitter.start, ev.buf)
+                if not ok then
+                    -- Parser not available yet, auto_install will handle it on next open
+                end
+            end,
         })
     end,
 }

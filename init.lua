@@ -19,6 +19,7 @@ end
 -- vim.cmd("colorscheme vim")
 
 vim.opt.hlsearch = false
+vim.o.equalalways = false
 
 vim.opt.termguicolors = true
 

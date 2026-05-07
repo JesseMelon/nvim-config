@@ -123,7 +123,7 @@ local theme = lush(function()
         TelescopeSelection { fg = hsl(160, 80, 50), gui = "bold" },
 
         -- Other common groups to cover
-        ColorColumn { bg = hsl(160, 20, 20) },
+        ColorColumn { bg = "none" },
         Conceal { fg = hsl(0, 0, 50) },
         Cursor { fg = hsl(0, 0, 0), bg = hsl(160, 80, 50) },
         CursorColumn { bg = "none" },
@@ -150,6 +150,11 @@ local theme = lush(function()
         luaFunction { fg = hsl(0, 0, 78) },
         luaTable { fg = hsl(40, 100, 76) },
         markdownCode { fg = hsl(140, 80, 60) },
+
+        -- render-markdown.nvim
+        RenderMarkdownCode { bg = "none" },
+        RenderMarkdownCodeInline { bg = "none" },
+        RenderMarkdownCodeFallback { fg = hsl(0, 0, 100), bg = "none" },
         texStatement { fg = hsl(40, 100, 76) },
         vimCommand { fg = hsl(180, 60, 60) },
         yamlKey { fg = hsl(180, 60, 60) },

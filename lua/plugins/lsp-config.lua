@@ -56,7 +56,7 @@ return {
                     "--background-index=false",
                     "--header-insertion=never",
                     "--completion-style=bundled",
-                    "--clang-tidy", -- Keep this if you want those tidy checks from your YAML
+                    "--clang-tidy",
                 },
                 capabilities = capabilities,
                 -- Force filetypes here just in case
@@ -104,6 +104,8 @@ return {
                 update_in_insert = false,
                 severity_sort = false,
             })
+
+            vim.lsp.enable({ "clangd", "html", "ts_ls", "neocmake" })
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
